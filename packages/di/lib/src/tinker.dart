@@ -1,4 +1,4 @@
-import 'package:eve/src/di/type_factory.dart';
+import 'package:di/src/type_factory.dart';
 
 class Tinker {
   static final Map<String, Tinker> _keepers = <String, Tinker>{};

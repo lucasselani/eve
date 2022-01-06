@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/packages/abstractions/melos_abstractions.iml" filepath="$PROJECT_DIR$/packages/abstractions/melos_abstractions.iml" />
+      <module fileurl="file://$PROJECT_DIR$/packages/dependencies/melos_dependencies.iml" filepath="$PROJECT_DIR$/packages/dependencies/melos_dependencies.iml" />
+      <module fileurl="file://$PROJECT_DIR$/packages/di/melos_di.iml" filepath="$PROJECT_DIR$/packages/di/melos_di.iml" />
+      <module fileurl="file://$PROJECT_DIR$/packages/eve/melos_eve.iml" filepath="$PROJECT_DIR$/packages/eve/melos_eve.iml" />
+      <module fileurl="file://$PROJECT_DIR$/packages/i18n/melos_i18n.iml" filepath="$PROJECT_DIR$/packages/i18n/melos_i18n.iml" />
+      <module fileurl="file://$PROJECT_DIR$/packages/navigator/melos_navigator.iml" filepath="$PROJECT_DIR$/packages/navigator/melos_navigator.iml" />
+      <module fileurl="file://$PROJECT_DIR$/packages/reactive/melos_reactive.iml" filepath="$PROJECT_DIR$/packages/reactive/melos_reactive.iml" />
+      <module fileurl="file://$PROJECT_DIR$/packages/storage/melos_storage.iml" filepath="$PROJECT_DIR$/packages/storage/melos_storage.iml" />
+      <module fileurl="file://$PROJECT_DIR$/melos_eve.iml" filepath="$PROJECT_DIR$/melos_eve.iml" />
+    </modules>
+  </component>
+</project>

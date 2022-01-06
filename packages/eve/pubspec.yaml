@@ -10,11 +10,18 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+    
   flutter_localizations:
     sdk: flutter   
 
   abstractions:
     path: ../abstractions
+
+  dependencies:
+    path: ../dependencies
+
+  di:
+    path: ../di
 
   i18n:
     path: ../i18n

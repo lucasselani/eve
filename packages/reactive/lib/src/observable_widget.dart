@@ -1,6 +1,6 @@
-import 'package:abstractions/src/functional/data_state.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:reactive/reactive.dart';
 
 class ObservableWidget<T> extends ValueListenableBuilder<DataState<T>> {
   const ObservableWidget({

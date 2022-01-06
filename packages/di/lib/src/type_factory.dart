@@ -1,4 +1,4 @@
-import 'package:eve/src/di/tinker.dart';
+import 'package:di/di.dart';
 
 typedef ObjectFactory<T> = T Function(Tinker keeper);
 
