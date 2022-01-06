@@ -1,0 +1,21 @@
+name: reactive
+description: Contains all reactive code
+version: 0.0.1
+publish_to: none
+
+environment:
+  sdk: ">=2.15.1 <3.0.0"
+  flutter: ">=1.17.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  abstractions:
+    path: ../abstractions
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+flutter:
