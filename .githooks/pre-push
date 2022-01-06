@@ -1,0 +1,19 @@
+#!/bin/sh
+
+# Analyze code according to pedantic rules
+echo "Running static analysis..."
+melos run analyze
+status=$?
+if [ "$status" != 0 ] ; then
+    echo 1>&2 "Static analysis found violations, correct the lines above before pushing"
+    exit 1
+fi
+
+# Run tests
+echo "Running unit tests..."
+melos run test
+status=$?
+if [ "$status" != 0 ] ; then
+    echo 1>&2 "Correct the tests before pushing"
+    exit 1
+fi

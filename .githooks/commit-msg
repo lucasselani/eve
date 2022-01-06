@@ -1,0 +1,11 @@
+#!/bin/sh
+
+re="(feat|fix|build|docs|refactor|test|metrics):[ ]{1}[A-Za-z0-9]+"
+commit_msg=$(cat "$1")
+if [[ $commit_msg =~ $re ]]
+then 
+    exit 0
+else
+    echo 1>&2 'Commit message should use the commit lints convention'
+    exit 1
+fi
