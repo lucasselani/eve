@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
-abstract class I18nModule {
+abstract class EveI18nModule {
   final String packageName;
 
-  I18nModule(this.packageName);
+  EveI18nModule(this.packageName);
 
   Map<Locale, Map<String, String>> get internationalStrings;
 }

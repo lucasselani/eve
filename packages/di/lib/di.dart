@@ -1,3 +1,3 @@
 library di;
 
-export 'src/tinker.dart';
+export 'src/injector.dart';

@@ -16,15 +16,15 @@ Import this repository in your Flutter application, using the eve path (you can 
 
 ## What Eve has
 
-- SoulKeeper: A class to save and read your data in the FlutterSecureStorage
-- Invoker: A global pubsub using Stream broadcast
-- Admiral: A global contextless navigator
-- Silenecer: A global String translator
-- Tinker: A global DI class with singleton/factory options
-- Observable/ObservableWidget: A simple implementation of ValueListener and ValueListenableBuilder
-- Either/UseCases/Failure: To create the base of clean arch
 - BaseApp/MicroApp/CommonPackage: To create the base of modularization and micro front end
+- Either/UseCases/Failure: To create the base of clean arch
 - EveApp: A base app on the top of MaterialApp
+- EventBus: A global pubsub using Stream broadcast
+- EveNavigator: A global contextless navigator
+- EveTranslator: A global String translator
+- EveVault: A class to save and read your data in the FlutterSecureStorage
+- Injector: A global DI class with singleton/factory options
+- Observable/ObservableWidget: A simple implementation of ValueListener and ValueListenableBuilder
 
 ## Environment version
 

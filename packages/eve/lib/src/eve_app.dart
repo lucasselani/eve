@@ -2,32 +2,32 @@ import 'package:eve/eve.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:i18n/i18n.dart';
+import 'package:navigator/navigator.dart';
 
 class EveApp extends StatelessWidget {
-  final I18nDelegate delegate;
-  final EveNavigator navigator;
+  final EveI18nDelegate delegate;
+  final EveRouter router;
   final ThemeData? themeData;
-  final Color? systemNavigationBarColor;
 
   EveApp({
     required BaseApp baseApp,
-    this.systemNavigationBarColor,
     this.themeData,
     List<Locale>? supportedLanguages,
     required Locale defaultLanguage,
     Key? key,
     String eveName = 'default',
-  })  : navigator = EveNavigator(navigatorModules: [
-          baseApp.navigatorModule,
+  })  : router = EveRouter(navigatorModules: [
+          if (baseApp.navigatorModule != null) baseApp.navigatorModule!,
           ...baseApp.packages
               .where((package) =>
                   package is MicroApp && package.navigatorModule != null)
               .map((microApp) => (microApp as MicroApp).navigatorModule!)
               .toList()
         ]),
-        delegate = I18nDelegate(
+        delegate = EveI18nDelegate(
           i18nModules: [
-            baseApp.i18nModule,
+            if (baseApp.i18nModule != null) baseApp.i18nModule!,
             ...baseApp.packages
                 .where((package) =>
                     package is MicroApp && package.i18nModule != null)
@@ -43,21 +43,20 @@ class EveApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setPreferredOrientations([
+    SystemChrome.setPreferredOrientations(const [
       DeviceOrientation.portraitUp,
     ]);
     SystemChrome.setSystemUIOverlayStyle(
-      SystemUiOverlayStyle(
-        systemNavigationBarColor: systemNavigationBarColor,
+      const SystemUiOverlayStyle(
         statusBarColor: Colors.transparent,
       ),
     );
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: themeData,
-      onGenerateRoute: navigator.onGenerateRoute,
-      navigatorKey: Admiral(navigator.name).key,
-      navigatorObservers: [Admiral(navigator.name).observer],
+      onGenerateRoute: router.onGenerateRoute,
+      navigatorKey: router.key,
+      navigatorObservers: [router.observer],
       localizationsDelegates: [
         delegate,
         GlobalMaterialLocalizations.delegate,

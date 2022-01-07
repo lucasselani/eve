@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:i18n/src/i18n_module.dart';
-import 'package:i18n/src/silencer.dart';
+import 'package:i18n/src/eve_i18n_module.dart';
+import 'package:i18n/src/eve_translator.dart';
 
-class I18nDelegate extends LocalizationsDelegate<Silencer> {
+class EveI18nDelegate extends LocalizationsDelegate<EveTranslator> {
   final Locale defaultLanguage;
   final List<Locale> supportedLanguages;
-  final List<I18nModule> i18nModules;
+  final List<EveI18nModule> i18nModules;
 
-  const I18nDelegate({
+  const EveI18nDelegate({
     required this.defaultLanguage,
     required this.supportedLanguages,
     required this.i18nModules,
@@ -17,7 +17,7 @@ class I18nDelegate extends LocalizationsDelegate<Silencer> {
   bool isSupported(Locale locale) => isLanguageSupported(locale);
 
   @override
-  Future<Silencer> load(Locale locale) async {
+  Future<EveTranslator> load(Locale locale) async {
     Locale chosenLocale;
 
     if (isLanguageAndCountrySupported(locale)) {
@@ -29,7 +29,7 @@ class I18nDelegate extends LocalizationsDelegate<Silencer> {
     }
 
     final i18nMaps = await _loadMaps(locale: chosenLocale);
-    return Silencer(
+    return EveTranslator(
       i18nMaps,
       chosenLocale,
       defaultLanguage,
@@ -38,7 +38,7 @@ class I18nDelegate extends LocalizationsDelegate<Silencer> {
   }
 
   @override
-  bool shouldReload(I18nDelegate old) => false;
+  bool shouldReload(EveI18nDelegate old) => false;
 
   bool isLanguageAndCountrySupported(Locale locale) =>
       supportedLanguages.any((language) =>

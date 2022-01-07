@@ -7,7 +7,8 @@ class EveManager {
 
   final BaseApp _app;
 
-  Completer _initialization = Completer();
+  Completer<void> _initialization = Completer();
+  Future get initialization => _initialization.future;
   bool get isInitialized => _initialization.isCompleted;
 
   EveManager._(this._app);
@@ -23,12 +24,12 @@ class EveManager {
   factory EveManager.initialize({required BaseApp app, required String name}) {
     if (_instances[name] == null) {
       _instances[name] = EveManager._(app);
-      _instances[name]!.initialize();
+      _instances[name]!._initialize();
     }
     return _instances[name]!;
   }
 
-  Future<void> initialize() async {
+  Future<void> _initialize() async {
     if (isInitialized) return;
     await _app.initialize();
     for (final package in _app.packages) {

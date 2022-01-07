@@ -11,8 +11,8 @@ import 'dart:async';
 /// filter events.
 ///
 
-class Invoker {
-  static final Invoker _instance = Invoker._();
+class EventBus {
+  static final EventBus _instance = EventBus._();
 
   final StreamController _streamController;
 
@@ -22,9 +22,9 @@ class Invoker {
   /// during a [cast] call. If false (the default), the event will be passed to
   /// the listeners at a later time, after the code creating the event has
   /// completed.
-  Invoker._() : _streamController = StreamController.broadcast();
+  EventBus._() : _streamController = StreamController.broadcast();
 
-  factory Invoker() => _instance;
+  factory EventBus() => _instance;
 
   /// Listens for events of Type [T] and its subtypes.
   ///
