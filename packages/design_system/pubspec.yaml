@@ -1,5 +1,5 @@
-name: di
-description: Contains DI classes
+name: design_system
+description: Eve Design System
 version: 0.0.1
 publish_to: none
 

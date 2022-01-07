@@ -6,7 +6,7 @@ This is your unique repository for the eve
 
 Import this repository in your Flutter application, using the eve path (you can chose the ref between main and tags)
 
-```dart
+```yaml
   eve:
     git:
       url: git@github.com:lucasselani/eve.git

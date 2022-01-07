@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:navigator/src/admiral.dart';
-import 'package:navigator/src/eve_navigator_module.dart';
+import 'package:navigator/src/navigator_module.dart';
 import 'package:navigator/src/eve_navigator_observer.dart';
 
 class EveNavigator {
   final String name;
-  final List<EveNavigatorModule> navigatorModules;
+  final List<NavigatorModule> navigatorModules;
 
   EveNavigator({
     required this.navigatorModules,

@@ -1,22 +1,23 @@
 import 'package:eve/eve.dart';
+import 'package:eve/src/eve_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
-class EveApp extends StatefulWidget {
-  final BaseApp baseApp;
-  final EveI18nDelegate delegate;
+class EveApp extends StatelessWidget {
+  final I18nDelegate delegate;
   final EveNavigator navigator;
   final ThemeData? themeData;
   final Color? systemNavigationBarColor;
 
   EveApp({
-    Key? key,
-    required this.baseApp,
+    required BaseApp baseApp,
     this.systemNavigationBarColor,
     this.themeData,
     List<Locale>? supportedLanguages,
     required Locale defaultLanguage,
+    Key? key,
+    String eveName = 'default',
   })  : navigator = EveNavigator(navigatorModules: [
           baseApp.navigatorModule,
           ...baseApp.packages
@@ -25,7 +26,7 @@ class EveApp extends StatefulWidget {
               .map((microApp) => (microApp as MicroApp).navigatorModule!)
               .toList()
         ]),
-        delegate = EveI18nDelegate(
+        delegate = I18nDelegate(
           i18nModules: [
             baseApp.i18nModule,
             ...baseApp.packages
@@ -37,70 +38,34 @@ class EveApp extends StatefulWidget {
           defaultLanguage: defaultLanguage,
           supportedLanguages: supportedLanguages ?? [defaultLanguage],
         ),
-        super(key: key);
-
-  @override
-  State<StatefulWidget> createState() => _EveState();
-}
-
-class _EveState extends State<EveApp> {
-  bool _isInitialized = false;
-
-  @override
-  void initState() {
-    super.initState();
-    if (!_isInitialized) _initialize();
-  }
-
-  @override
-  void dispose() {
-    _dispose();
-    super.dispose();
+        super(key: key) {
+    EveManager.initialize(app: baseApp, name: eveName);
   }
 
   @override
   Widget build(BuildContext context) {
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
-      DeviceOrientation.portraitDown,
     ]);
     SystemChrome.setSystemUIOverlayStyle(
       SystemUiOverlayStyle(
-        systemNavigationBarColor: widget.systemNavigationBarColor,
+        systemNavigationBarColor: systemNavigationBarColor,
         statusBarColor: Colors.transparent,
       ),
     );
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      theme: widget.themeData,
-      onGenerateRoute: widget.navigator.onGenerateRoute,
-      navigatorKey: Admiral(widget.navigator.name).key,
-      navigatorObservers: [Admiral(widget.navigator.name).observer],
+      theme: themeData,
+      onGenerateRoute: navigator.onGenerateRoute,
+      navigatorKey: Admiral(navigator.name).key,
+      navigatorObservers: [Admiral(navigator.name).observer],
       localizationsDelegates: [
-        widget.delegate,
+        delegate,
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
       ],
-      supportedLocales: widget.delegate.supportedLanguages,
+      supportedLocales: delegate.supportedLanguages,
     );
-  }
-
-  Future<void> _initialize() async {
-    await widget.baseApp.initialize();
-    for (final package in widget.baseApp.packages) {
-      await package.initialize();
-    }
-    setState(() {
-      _isInitialized = true;
-    });
-    widget.baseApp.onInitialized();
-  }
-
-  Future<void> _dispose() async {
-    await widget.baseApp.dispose();
-    for (final package in widget.baseApp.packages) {
-      await package.dispose();
-    }
   }
 }

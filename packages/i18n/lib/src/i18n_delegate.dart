@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:i18n/src/i18n_module.dart';
 import 'package:i18n/src/silencer.dart';
 
-class EveI18nDelegate extends LocalizationsDelegate<Silencer> {
+class I18nDelegate extends LocalizationsDelegate<Silencer> {
   final Locale defaultLanguage;
   final List<Locale> supportedLanguages;
-  final List<EveI18nModule> i18nModules;
+  final List<I18nModule> i18nModules;
 
-  const EveI18nDelegate({
+  const I18nDelegate({
     required this.defaultLanguage,
     required this.supportedLanguages,
     required this.i18nModules,
@@ -38,7 +38,7 @@ class EveI18nDelegate extends LocalizationsDelegate<Silencer> {
   }
 
   @override
-  bool shouldReload(EveI18nDelegate old) => false;
+  bool shouldReload(I18nDelegate old) => false;
 
   bool isLanguageAndCountrySupported(Locale locale) =>
       supportedLanguages.any((language) =>
