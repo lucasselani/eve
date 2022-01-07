@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/packages/abstractions/melos_abstractions.iml" filepath="$PROJECT_DIR$/packages/abstractions/melos_abstractions.iml" />
       <module fileurl="file://$PROJECT_DIR$/packages/dependencies/melos_dependencies.iml" filepath="$PROJECT_DIR$/packages/dependencies/melos_dependencies.iml" />
+      <module fileurl="file://$PROJECT_DIR$/packages/design_system/melos_design_system.iml" filepath="$PROJECT_DIR$/packages/design_system/melos_design_system.iml" />
       <module fileurl="file://$PROJECT_DIR$/packages/di/melos_di.iml" filepath="$PROJECT_DIR$/packages/di/melos_di.iml" />
       <module fileurl="file://$PROJECT_DIR$/packages/eve/melos_eve.iml" filepath="$PROJECT_DIR$/packages/eve/melos_eve.iml" />
       <module fileurl="file://$PROJECT_DIR$/packages/i18n/melos_i18n.iml" filepath="$PROJECT_DIR$/packages/i18n/melos_i18n.iml" />
