@@ -50,8 +50,8 @@ class EveNavigator {
 
   /// Navigate to next route
   /// [mode] navigation mode: push, clear all before push or replace current route
-  /// [name] name of the route you want to go (must be registered in the GenomaNavigator)
-  /// [widget] the widget you want to go (doesn't need to be registed in the GenomaNavigator)
+  /// [name] name of the route you want to go
+  /// [widget] the widget you want to go
   /// Note 1: priority of selection = widget > name
   /// Note 2: if you pass both the name and the widget, Admiral will navigate to the [widget]
   /// and will use the [name] as the navigation settings.
