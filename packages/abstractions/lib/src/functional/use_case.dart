@@ -5,6 +5,10 @@ abstract class AsyncUseCase<Out> {
   Future<Either<Failure, Out>> run();
 }
 
-abstract class UseCase<Out> {
+abstract class FunctionalUseCase<Out> {
   Either<Failure, Out> run();
+}
+
+abstract class UseCase<Out> {
+  Out run();
 }

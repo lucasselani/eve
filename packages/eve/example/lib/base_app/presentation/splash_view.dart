@@ -35,7 +35,7 @@ class _SplashState extends State<SplashView> {
 
   Future<void> _navigateAfterInit() async {
     await Future.delayed(const Duration(seconds: 2));
-    await EveManager().initialization;
+    await EveManager().appInitialization;
     EveNavigator().go(mode: NavMode.replace, name: '/counter');
   }
 }

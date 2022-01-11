@@ -6,16 +6,20 @@ import 'package:i18n/i18n.dart';
 import 'package:navigator/navigator.dart';
 
 class EveApp extends StatelessWidget {
-  final EveI18nDelegate delegate;
   final EveRouter router;
+  final String eveName;
 
-  EveApp({
+  static void run({
     required BaseApp baseApp,
-    required EveTheme theme,
-    EveTheme? darkTheme,
-    required Locale defaultLanguage,
-    List<Locale>? supportedLanguages,
     String eveName = 'default',
+  }) {
+    WidgetsFlutterBinding.ensureInitialized();
+    runApp(EveApp._(baseApp: baseApp, eveName: eveName));
+  }
+
+  EveApp._({
+    required BaseApp baseApp,
+    this.eveName = 'default',
     Key? key,
   })  : router = EveRouter(navigationModules: [
           baseApp.navigatorModule,
@@ -24,23 +28,10 @@ class EveApp extends StatelessWidget {
               .map((microApp) => (microApp as MicroApp).navigatorModule)
               .toList()
         ]),
-        delegate = EveI18nDelegate(
-          i18nModules: [
-            baseApp.i18nModule,
-            ...baseApp.packages
-                .where((package) => package is MicroApp)
-                .map((microApp) => (microApp as MicroApp).i18nModule)
-                .toList()
-          ],
-          defaultLanguage: defaultLanguage,
-          supportedLanguages: supportedLanguages ?? [defaultLanguage],
-        ),
         super(key: key) {
     EveManager.initialize(
       app: baseApp,
       name: eveName,
-      defaultTheme: theme,
-      darkTheme: darkTheme,
     );
   }
 
@@ -49,31 +40,50 @@ class EveApp extends StatelessWidget {
     SystemChrome.setPreferredOrientations(const [
       DeviceOrientation.portraitUp,
     ]);
-    SystemChrome.setSystemUIOverlayStyle(
-      const SystemUiOverlayStyle(
-        statusBarColor: Colors.transparent,
-      ),
-    );
     return AnimatedBuilder(
-        animation: EveManager(),
-        builder: (context, child) {
-          return MaterialApp(
-            debugShowCheckedModeBanner: false,
-            theme: EveManager().defaultTheme.themeData,
-            darkTheme: EveManager().darkTheme?.themeData,
-            themeMode:
-                EveManager().isDarkMode ? ThemeMode.dark : ThemeMode.light,
-            onGenerateRoute: router.onGenerateRoute,
-            navigatorKey: router.key,
-            navigatorObservers: [router.observer],
-            localizationsDelegates: [
-              delegate,
-              GlobalMaterialLocalizations.delegate,
-              GlobalWidgetsLocalizations.delegate,
-              GlobalCupertinoLocalizations.delegate,
-            ],
-            supportedLocales: delegate.supportedLanguages,
-          );
-        });
+      animation: EveManager(),
+      builder: (context, child) {
+        final i18nDelegate = EveI18nDelegate(
+          i18nModules: [
+            EveManager().app.i18nModule,
+            ...EveManager()
+                .app
+                .packages
+                .where((package) => package is MicroApp)
+                .map((microApp) => (microApp as MicroApp).i18nModule)
+                .toList()
+          ],
+          defaultLanguage: EveManager().app.defaultLanguage,
+          supportedLanguages: EveManager().app.supportedLanguages,
+        );
+        return FutureBuilder<void>(
+          future: EveManager().eveInitialization,
+          builder: (context, snapshot) {
+            if (!EveManager().isEveInitialized) {
+              return const EmptyWidget();
+            } else {
+              return MaterialApp(
+                debugShowCheckedModeBanner: false,
+                theme: EveManager().app.defaultTheme.themeData,
+                darkTheme: EveManager().app.darkTheme?.themeData,
+                themeMode:
+                    EveManager().isDarkMode ? ThemeMode.dark : ThemeMode.light,
+                onGenerateRoute: router.onGenerateRoute,
+                navigatorKey: router.key,
+                navigatorObservers: [router.observer],
+                localizationsDelegates: [
+                  i18nDelegate,
+                  GlobalMaterialLocalizations.delegate,
+                  GlobalWidgetsLocalizations.delegate,
+                  GlobalCupertinoLocalizations.delegate,
+                ],
+                supportedLocales: i18nDelegate.supportedLanguages,
+                locale: EveManager().currentLanguage,
+              );
+            }
+          },
+        );
+      },
+    );
   }
 }

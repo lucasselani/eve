@@ -1,31 +1,42 @@
 import 'dart:async';
 
 import 'package:eve/eve.dart';
+import 'package:eve/src/data/repositories/eve_repository.dart';
+import 'package:eve/src/domain/repositories/eve_repository.dart';
+import 'package:eve/src/domain/use_cases/eve_manager_use_cases.dart';
 import 'package:flutter/material.dart';
 
 class EveManager with ChangeNotifier {
   static Map<String, EveManager> _instances = {};
 
   final BaseApp app;
-  final EveTheme defaultTheme;
-  final EveTheme? darkTheme;
 
-  bool _isDarkMode = false;
-  bool get isDarkMode => _isDarkMode && darkTheme != null;
+  late bool _isDarkMode;
+  bool get isDarkMode => _isDarkMode && app.darkTheme != null;
   set isDarkMode(bool value) {
     _isDarkMode = value;
+    UseCaseSetIsDarkTheme(_isDarkMode).run();
     notifyListeners();
   }
 
-  Completer<void> _initialization = Completer();
-  Future get initialization => _initialization.future;
-  bool get isInitialized => _initialization.isCompleted;
+  late Locale _currentLanguage;
+  Locale get currentLanguage => _currentLanguage;
+  set currentLanguage(Locale locale) {
+    _currentLanguage = locale;
+    UseCaseSetCurrentLanguage(_currentLanguage).run();
+    notifyListeners();
+    EveNavigator().restart();
+  }
 
-  EveManager._(
-    this.app,
-    this.defaultTheme,
-    this.darkTheme,
-  );
+  Completer<void> _appInitialization = Completer();
+  Future get appInitialization => _appInitialization.future;
+  bool get isAppInitialized => _appInitialization.isCompleted;
+
+  Completer<void> _eveInitialization = Completer();
+  Future get eveInitialization => _eveInitialization.future;
+  bool get isEveInitialized => _eveInitialization.isCompleted;
+
+  EveManager._(this.app);
 
   factory EveManager([String? name = 'default']) {
     final instance = _instances[name];
@@ -38,23 +49,32 @@ class EveManager with ChangeNotifier {
   factory EveManager.initialize({
     required BaseApp app,
     required String name,
-    required EveTheme defaultTheme,
-    EveTheme? darkTheme,
   }) {
     if (_instances[name] == null) {
-      _instances[name] = EveManager._(app, defaultTheme, darkTheme);
+      _instances[name] = EveManager._(app);
       _instances[name]!._initialize();
     }
     return _instances[name]!;
   }
 
   Future<void> _initialize() async {
-    if (isInitialized) return;
+    if (isAppInitialized) return;
+    await _initializeEve();
     await app.initialize();
     for (final package in app.packages) {
       await package.initialize();
     }
-    _initialization.complete();
+    _appInitialization.complete();
+  }
+
+  Future<void> _initializeEve() async {
+    if (isEveInitialized) return;
+    final vault = await Vault.open(storageId: 'eveAppManager');
+    Injector('eveApp')
+        .map<EveRepository>(() => EveRepositoryImpl(vault), isSingleton: true);
+    _isDarkMode = UseCaseIsDarkTheme().run();
+    _currentLanguage = UseCaseGetCurrentLanguage(app.defaultLanguage).run();
+    _eveInitialization.complete();
   }
 
   @override
@@ -63,7 +83,8 @@ class EveManager with ChangeNotifier {
     for (final package in app.packages) {
       package.dispose();
     }
-    _initialization = Completer();
+    _appInitialization = Completer();
+    _eveInitialization = Completer();
     super.dispose();
   }
 }

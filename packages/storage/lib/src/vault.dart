@@ -31,9 +31,8 @@ abstract class Vault {
       return _instances[storageId]!;
     } catch (e, stackTrace) {
       log('failed to open Vault', error: e, stackTrace: stackTrace);
+      rethrow;
     }
-
-    return _instances[storageId]!;
   }
 
   @visibleForTesting

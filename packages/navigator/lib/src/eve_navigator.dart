@@ -94,6 +94,15 @@ class EveNavigator {
       }
     } catch (_) {}
   }
+
+  /// Refresh current page the current navigation and history by navigating to the default route: '/'
+  void restart() {
+    final control = _NavControl.to(
+      name: '/',
+      key: _key,
+    );
+    control.clearAndPush();
+  }
 }
 
 class _NavControl {

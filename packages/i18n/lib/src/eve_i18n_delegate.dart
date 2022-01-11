@@ -1,5 +1,4 @@
-import 'dart:io';
-
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:i18n/src/eve_i18n_module.dart';
 import 'package:i18n/src/eve_translator.dart';
@@ -19,13 +18,8 @@ class EveI18nDelegate extends LocalizationsDelegate<EveTranslator> {
   bool isSupported(Locale locale) => isLanguageSupported(locale);
 
   @override
-  Future<EveTranslator> load(Locale locale) async {
+  Future<EveTranslator> load(Locale locale) {
     Locale chosenLocale;
-    final appLocaleArray = Platform.localeName.split('_');
-    locale = appLocaleArray.isEmpty
-        ? locale
-        : Locale(appLocaleArray.first,
-            appLocaleArray.length > 1 ? appLocaleArray[1] : null);
 
     if (isLanguageAndCountrySupported(locale)) {
       chosenLocale = locale;
@@ -35,13 +29,13 @@ class EveI18nDelegate extends LocalizationsDelegate<EveTranslator> {
       chosenLocale = defaultLanguage;
     }
 
-    final i18nMaps = await _loadMaps(locale: chosenLocale);
-    return EveTranslator(
+    final i18nMaps = _loadMaps(locale: chosenLocale);
+    return SynchronousFuture<EveTranslator>(EveTranslator(
       i18nMaps,
       chosenLocale,
       defaultLanguage,
       supportedLanguages,
-    );
+    ));
   }
 
   @override
@@ -55,8 +49,7 @@ class EveI18nDelegate extends LocalizationsDelegate<EveTranslator> {
   bool isLanguageSupported(Locale locale) => supportedLanguages
       .any((language) => language.languageCode == locale.languageCode);
 
-  Future<Map<String, Map<String, String>>> _loadMaps(
-      {required Locale locale}) async {
+  Map<String, Map<String, String>> _loadMaps({required Locale locale}) {
     final allModuleStrings = <String, Map<String, String>>{};
 
     for (final module in i18nModules) {

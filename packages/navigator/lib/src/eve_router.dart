@@ -61,5 +61,6 @@ class EveRouter {
       MaterialPageRoute(
         builder: (_) => widget,
         settings: RouteSettings(name: name, arguments: args),
+        maintainState: false,
       );
 }

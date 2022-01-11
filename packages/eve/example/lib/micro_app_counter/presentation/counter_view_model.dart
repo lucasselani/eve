@@ -11,14 +11,14 @@ class CounterViewModel {
   void _init() {
     final result = UseCaseGetCount().run();
     if (result.rightOrNull != null) {
-      count.value = SuccessState(data: result.right);
+      count.toSuccess(result.right);
     }
   }
 
   void increment() {
     final previousValue = count.value.isSuccess ? count.value.data! : 0;
     final newValue = previousValue + 1;
-    count.value = SuccessState(data: newValue);
+    count.toSuccess(newValue);
     UseCaseSetCount(newValue).run();
   }
 }
