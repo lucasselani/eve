@@ -1,7 +1,6 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:navigator/src/eve_navigator_observer.dart';
+import 'dart:developer';
 
 enum NavMode {
   push,
@@ -109,10 +108,7 @@ class _NavControl {
     this.to,
     this.args,
     required GlobalKey<NavigatorState> key,
-  }) : navState = Platform.environment.containsKey('FLUTTER_TEST') ||
-                key.currentContext == null
-            ? null
-            : Navigator.of(key.currentContext!);
+  }) : navState = Navigator.of(key.currentContext!);
 
   /// Create a navigator to go to next routes
   factory _NavControl.to({
@@ -176,7 +172,8 @@ class _NavControl {
   Future<dynamic> _navigate(Future<dynamic> Function() navigation) async {
     try {
       return await navigation();
-    } catch (e) {
+    } catch (e, stacktrace) {
+      log('failed to navigate', error: e, stackTrace: stacktrace);
       return null;
     }
   }

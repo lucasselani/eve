@@ -35,6 +35,9 @@ dependencies:
   reactive:
     path: ../reactive
 
+  storage:
+    path: ../storage
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

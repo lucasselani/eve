@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:navigator/src/eve_navigator.dart';
-import 'package:navigator/src/eve_navigator_module.dart';
+import 'package:navigator/src/eve_navigation_module.dart';
 import 'package:navigator/src/eve_navigator_observer.dart';
 
 class EveRouter {
   final String name;
-  final List<EveNavigatorModule> navigatorModules;
+  final List<EveNavigationModule> navigationModules;
   final GlobalKey<NavigatorState> key = GlobalKey<NavigatorState>();
   final EveNavigatorObserver observer = EveNavigatorObserver();
 
   EveRouter({
-    required this.navigatorModules,
+    required this.navigationModules,
     this.name = 'default',
   }) {
     EveNavigator.create(
@@ -26,7 +26,7 @@ class EveRouter {
     }
 
     final routeName = settings.name!;
-    for (final module in navigatorModules) {
+    for (final module in navigationModules) {
       final routes = module.routes.where(
         (route) => route.routeName == routeName,
       );

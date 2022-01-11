@@ -1,7 +1,7 @@
-import 'dart:io';
-
-import 'package:storage/src/mock_storage.dart';
-import 'package:storage/src/secure_storage.dart';
+import 'package:flutter/foundation.dart';
+import 'package:storage/src/mock_vault.dart';
+import 'package:storage/src/secure_vault.dart';
+import 'dart:developer';
 
 abstract class Vault {
   static final Map<String, Vault> _instances = {};
@@ -26,9 +26,22 @@ abstract class Vault {
     if (isOpen(storageId: storageId)) {
       return _instances[storageId]!;
     }
-    final instance = Platform.environment.containsKey('FLUTTER_TEST')
-        ? await MockStorage.open()
-        : await SecureStorage.open(storageId: storageId);
+    try {
+      _instances[storageId] = await SecureVault.open(storageId: storageId);
+      return _instances[storageId]!;
+    } catch (e, stackTrace) {
+      log('failed to open Vault', error: e, stackTrace: stackTrace);
+    }
+
+    return _instances[storageId]!;
+  }
+
+  @visibleForTesting
+  static Future<Vault> openForTest({required String storageId}) async {
+    if (isOpen(storageId: storageId)) {
+      return _instances[storageId]!;
+    }
+    final instance = await MockVault.open();
     _instances[storageId] = instance;
     return instance;
   }

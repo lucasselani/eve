@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:i18n/src/eve_i18n_module.dart';
 import 'package:i18n/src/eve_translator.dart';
@@ -19,6 +21,11 @@ class EveI18nDelegate extends LocalizationsDelegate<EveTranslator> {
   @override
   Future<EveTranslator> load(Locale locale) async {
     Locale chosenLocale;
+    final appLocaleArray = Platform.localeName.split('_');
+    locale = appLocaleArray.isEmpty
+        ? locale
+        : Locale(appLocaleArray.first,
+            appLocaleArray.length > 1 ? appLocaleArray[1] : null);
 
     if (isLanguageAndCountrySupported(locale)) {
       chosenLocale = locale;

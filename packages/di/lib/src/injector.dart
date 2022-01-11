@@ -27,7 +27,7 @@ class Injector {
     final objectKey = _makeKey(T, key);
     if (!_factories.containsKey(objectKey)) {
       _factories[objectKey] =
-          TypeFactory<T>((tinker) => objectFactory(tinker), isSingleton);
+          TypeFactory<T>(() => objectFactory(), isSingleton);
     }
     return this;
   }
@@ -51,7 +51,7 @@ class Injector {
     if (objectFactory == null) {
       throw Exception("Cannot find object factory for '$objectKey'");
     }
-    return objectFactory.get(this) as T;
+    return objectFactory.get() as T;
   }
 
   void dispose() {

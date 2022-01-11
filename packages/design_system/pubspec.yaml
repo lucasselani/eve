@@ -16,3 +16,7 @@ dev_dependencies:
     sdk: flutter
 
 flutter:
+  fonts:
+    - family: Quicksand
+      fonts:
+        - asset: assets/fonts/Quicksand.ttf

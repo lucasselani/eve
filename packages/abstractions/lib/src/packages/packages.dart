@@ -8,12 +8,12 @@ abstract class CommonPackage {
 
 abstract class MicroApp extends CommonPackage {
   String get packageName;
-  EveI18nModule? get i18nModule => null;
-  EveNavigatorModule? get navigatorModule => null;
+  EveI18nModule get i18nModule;
+  EveNavigationModule get navigatorModule;
 }
 
 abstract class BaseApp extends MicroApp {
-  List<CommonPackage> get packages => [];
+  List<CommonPackage> get packages;
 
   @override
   String get packageName => 'baseApp';

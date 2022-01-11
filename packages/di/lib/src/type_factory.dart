@@ -1,6 +1,4 @@
-import 'package:di/di.dart';
-
-typedef ObjectFactory<T> = T Function(Injector injector);
+typedef ObjectFactory<T> = T Function();
 
 class TypeFactory<T> {
   final bool _isSingleton;
@@ -9,12 +7,12 @@ class TypeFactory<T> {
 
   TypeFactory(this._objectFactory, this._isSingleton);
 
-  T get(Injector keeper) {
+  T get() {
     if (_isSingleton && _instance != null) {
       return _instance!;
     }
 
-    final instance = _objectFactory(keeper);
+    final instance = _objectFactory();
     if (_isSingleton) {
       _instance = instance;
     }
