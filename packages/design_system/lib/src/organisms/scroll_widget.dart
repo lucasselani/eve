@@ -3,10 +3,15 @@ import 'package:flutter/material.dart';
 
 class EveScrollWidget extends StatelessWidget {
   final List<Widget> children;
-  final Widget? bottomWidget;
+  final List<Widget>? bottomWidgets;
+  final CrossAxisAlignment crossAxisAlignment;
 
-  const EveScrollWidget({required this.children, this.bottomWidget, Key? key})
-      : super(key: key);
+  const EveScrollWidget({
+    required this.children,
+    this.bottomWidgets,
+    this.crossAxisAlignment = CrossAxisAlignment.start,
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) => SafeArea(
@@ -21,7 +26,7 @@ class EveScrollWidget extends StatelessWidget {
               SliverToBoxAdapter(
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                  crossAxisAlignment: crossAxisAlignment,
                   children: children,
                 ),
               ),
@@ -29,7 +34,11 @@ class EveScrollWidget extends StatelessWidget {
                 hasScrollBody: false,
                 child: Align(
                   alignment: Alignment.bottomCenter,
-                  child: bottomWidget ?? const EmptyWidget(),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: crossAxisAlignment,
+                    children: bottomWidgets ?? [const EmptyWidget()],
+                  ),
                 ),
               )
             ],

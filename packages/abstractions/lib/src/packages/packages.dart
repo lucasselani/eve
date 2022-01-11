@@ -1,11 +1,13 @@
+import 'dart:async';
+
 import 'package:design_system/design_system.dart';
 import 'package:flutter/material.dart';
 import 'package:i18n/i18n.dart';
 import 'package:navigator/navigator.dart';
 
 abstract class CommonPackage {
-  Future<void> initialize() async {}
-  Future<void> dispose() async {}
+  FutureOr<void> initialize() async {}
+  FutureOr<void> dispose() async {}
 }
 
 abstract class MicroApp extends CommonPackage {

@@ -7,6 +7,7 @@ import 'package:eve/src/domain/use_cases/eve_manager_use_cases.dart';
 import 'package:flutter/material.dart';
 
 class EveManager with ChangeNotifier {
+  static const String eveId = 'eveAppManager';
   static Map<String, EveManager> _instances = {};
 
   final BaseApp app;
@@ -41,7 +42,7 @@ class EveManager with ChangeNotifier {
   factory EveManager([String? name = 'default']) {
     final instance = _instances[name];
     if (instance == null) {
-      throw Exception('You need a EveApp to work with EveManager!');
+      throw Exception('You need an EveApp to work with EveManager!');
     }
     return _instances[name]!;
   }
@@ -69,8 +70,8 @@ class EveManager with ChangeNotifier {
 
   Future<void> _initializeEve() async {
     if (isEveInitialized) return;
-    final vault = await Vault.open(storageId: 'eveAppManager');
-    Injector('eveApp')
+    final vault = await Vault.open(storageId: eveId);
+    Injector(eveId)
         .map<EveRepository>(() => EveRepositoryImpl(vault), isSingleton: true);
     _isDarkMode = UseCaseIsDarkTheme().run();
     _currentLanguage = UseCaseGetCurrentLanguage(app.defaultLanguage).run();

@@ -53,10 +53,12 @@ class _State extends State<CounterView> {
               onSuccess: (count, child) => EveText.paragraph(text: '$count'),
             )
           ],
-          bottomWidget: EveButton.solid(
-            onTap: () => _viewModel.increment(),
-            text: EveTranslator.translate(key: 'increment'),
-          ),
+          bottomWidgets: [
+            EveButton.solid(
+              onTap: () => _viewModel.increment(),
+              text: EveTranslator.translate(key: 'increment'),
+            ),
+          ],
         ),
       );
 }

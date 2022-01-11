@@ -7,7 +7,8 @@ import 'package:flutter/material.dart';
 class UseCaseIsDarkTheme implements UseCase<bool> {
   @override
   bool run() {
-    final result = Injector('eveApp').get<EveRepository>().isDarkTheme();
+    final result =
+        Injector(EveManager.eveId).get<EveRepository>().isDarkTheme();
     if (result.rightOrNull == null) return false;
     return result.right!;
   }
@@ -20,7 +21,7 @@ class UseCaseSetIsDarkTheme implements UseCase<void> {
 
   @override
   void run() {
-    Injector('eveApp').get<EveRepository>().setIsDarkTheme(isDarkTheme);
+    Injector(EveManager.eveId).get<EveRepository>().setIsDarkTheme(isDarkTheme);
   }
 }
 
@@ -31,20 +32,17 @@ class UseCaseGetCurrentLanguage implements UseCase<Locale> {
 
   @override
   Locale run() {
-    final result = Injector('eveApp').get<EveRepository>().getCurrentLanguage();
-    if (result.rightOrNull == null) {
-      final appLocaleArray = Platform.localeName.split('_');
+    final result =
+        Injector(EveManager.eveId).get<EveRepository>().getCurrentLanguage();
+    final getLocaleFromString = (String locale) {
+      final appLocaleArray = locale.split('_');
       return appLocaleArray.isEmpty
           ? defaultLanguage
           : Locale(appLocaleArray.first,
               appLocaleArray.length > 1 ? appLocaleArray[1] : null);
-    } else {
-      final appLocaleArray = result.right!.split('_');
-      return appLocaleArray.isEmpty
-          ? defaultLanguage
-          : Locale(appLocaleArray.first,
-              appLocaleArray.length > 1 ? appLocaleArray[1] : null);
-    }
+    };
+    return getLocaleFromString(
+        result.rightOrNull == null ? Platform.localeName : result.right!);
   }
 }
 
@@ -55,7 +53,7 @@ class UseCaseSetCurrentLanguage implements UseCase<void> {
 
   @override
   void run() {
-    Injector('eveApp')
+    Injector(EveManager.eveId)
         .get<EveRepository>()
         .setCurrentLanguage(currentLanguage.toString());
   }
