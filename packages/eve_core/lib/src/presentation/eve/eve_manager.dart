@@ -11,8 +11,6 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class EveManager with ChangeNotifier {
-  static const String eveId = 'eveAppManager';
-
   final BaseApp app;
 
   late bool _isDarkMode;
@@ -74,7 +72,7 @@ class EveManager with ChangeNotifier {
     final sharedPref = await SharedPreferences.getInstance();
     Injector().registerSingleton<SharedPreferences>(sharedPref);
 
-    final vault = Vault(storageId: eveId);
+    final vault = Vault(storageId: 'eveManager');
     Injector().registerSingleton<EveRepository>(EveRepositoryImpl(vault));
 
     _isDarkMode = EveManagerUseCases().isDarkTheme();

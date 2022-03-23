@@ -40,19 +40,13 @@ class EventBus {
   /// unpaused or canceled. So it's usually better to just cancel and later
   /// subscribe again (avoids memory leak).
   ///
-  Stream<T> on<T>() {
+  Stream<T> on<T extends Object>() {
     return _streamController.stream.where((event) => event is T).cast<T>();
   }
 
   /// Cast a new event on the event bus with the specified [event].
   ///
-  void cast(event) {
+  void send<T extends Object>(T event) {
     _streamController.add(event);
-  }
-
-  /// Destroy this [StreamController]. This is generally only in a testing context.
-  ///
-  void destroy() {
-    _streamController.close();
   }
 }

@@ -11,5 +11,5 @@ class Observable<T> extends ValueNotifier<DataState<T>> {
 
   void toSuccess(T data) => value = SuccessState<T>(data: data);
 
-  void toError(Failure failure) => value = ErrorState<T>(failure: failure);
+  void toError({Failure? failure}) => value = ErrorState<T>(failure: failure);
 }

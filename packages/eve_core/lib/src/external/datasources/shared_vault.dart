@@ -17,7 +17,13 @@ class SharedVault implements Vault {
 
   SharedVault(this.storageId) {
     final currentData = _storage.getString(storageId);
-    if (currentData != null) _data.addAll(jsonDecode(currentData));
+    if (currentData != null) {
+      try {
+        final base64bytes = base64Decode(currentData);
+        final jsonString = utf8.decode(base64bytes);
+        _data.addAll(jsonDecode(jsonString));
+      } catch (_) {}
+    }
   }
 
   @override
@@ -63,8 +69,10 @@ class SharedVault implements Vault {
   }) async {
     return _modificationsLock.synchronized(() async {
       try {
-        final string = jsonEncode(modifications());
-        await _storage.setString(storageId, string);
+        final jsonString = jsonEncode(modifications());
+        final jsonBytes = utf8.encode(jsonString);
+        final base64String = base64Encode(jsonBytes);
+        await _storage.setString(storageId, base64String);
         return Right(null);
       } catch (e) {
         onError();

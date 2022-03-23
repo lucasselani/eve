@@ -9,23 +9,32 @@ class ObserverWidget<T> extends ValueListenableBuilder<DataState<T>> {
     Key? key,
     required ValueListenable<DataState<T>> listenable,
     required Widget Function(T value, Widget? child) onSuccess,
-    Widget Function(Failure failure, Widget? child)? onError,
+    Widget Function(Failure? failure, Widget? child)? onError,
     Widget Function(Widget? child)? onLoading,
     Widget Function(Widget? child)? onEmpty,
   }) : super(
           child: child,
           key: key,
           builder: (_, value, child) {
-            if (value.isSuccess) return onSuccess(value.data!, child);
+            if (value.isSuccess) {
+              return onSuccess(value.data!, child);
+            }
             if (value.isError) {
-              return onError != null
-                  ? onError(value.error!, child)
-                  : Container();
+              if (onError != null) {
+                return onError(value.error, child);
+              }
+              return Container();
             }
             if (value.isLoading) {
-              return onLoading != null ? onLoading(child) : Container();
+              if (onLoading != null) {
+                return onLoading(child);
+              }
+              return Container();
             }
-            return onEmpty != null ? onEmpty(child) : Container();
+            if (onEmpty != null) {
+              return onEmpty(child);
+            }
+            return Container();
           },
           valueListenable: listenable,
         );
